@@ -4,6 +4,7 @@ using System.Text;
 using Moq;
 using MyAccessor;
 using MyEngine;
+using MyManager;
 using NUnit.Framework;
 using Shared;
 
@@ -21,9 +22,10 @@ namespace Tests
             var receiptAccessorMock = new Mock<IMyAccessor>();
             receiptAccessorMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => $"{s} NEWS");
 
-            var myManager = new MyManager.MyManager(new UserContext() { UserId = 1 });
-            myManager.AccessorServiceProvider.OverrideService<IMyAccessor>(receiptAccessorMock.Object);
-            myManager.EngineServiceProvider.OverrideService<IMyEngine>(receiptEngineMock.Object);
+            var myManager = new ManagerServiceProvider(new UserContext() {UserId = 1}).GetService<IMyManager>();
+
+            ((ManagerBase) myManager).AccessorServiceProvider.OverrideService<IMyAccessor>(receiptAccessorMock.Object);
+            ((ManagerBase) myManager).EngineServiceProvider.OverrideService<IMyEngine>(receiptEngineMock.Object);
 
             var result = myManager.TestMe("test");
 
@@ -37,9 +39,9 @@ namespace Tests
         [Test]
         public void UnitTests_MyManagerFake()
         {
-            var myManager = new MyManager.MyManager(new UserContext() { UserId = 1 });
-            myManager.AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>();
-            myManager.EngineServiceProvider.OverrideService<IMyEngine,FakeEngine>();
+            var myManager = new ManagerServiceProvider(new UserContext() { UserId = 1 }).GetService<IMyManager>();
+            ((ManagerBase)myManager).AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>();
+            ((ManagerBase)myManager).EngineServiceProvider.OverrideService<IMyEngine,FakeEngine>();
 
             var result = myManager.TestMe("test");
 
