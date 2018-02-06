@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using MyAccessor;
 using MyEngine;
@@ -38,13 +39,13 @@ namespace Tests
         public void UnitTests_MyManagerFake()
         {
             var myManager = new MyManager.MyManager(new UserContext() { UserId = 1 });
-            myManager.AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>();
-            myManager.EngineServiceProvider.OverrideService<IMyEngine,FakeEngine>();
+            myManager.AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>(ServiceLifetime.Scoped);
+            myManager.EngineServiceProvider.OverrideService<IMyEngine, FakeEngine>(ServiceLifetime.Scoped);
 
             var result = myManager.TestMe("test");
 
             Assert.IsTrue(result.Contains("FAKE"));
-            Assert.IsTrue(result.Contains("NEWS"));            
+            Assert.IsTrue(result.Contains("NEWS"));
         }
 
         private class FakeEngine : IMyEngine
