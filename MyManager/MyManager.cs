@@ -5,7 +5,7 @@ using Shared;
 
 namespace MyManager
 {
-    public class MyManager : ManagerBase, IMyManager
+    class MyManager : ManagerBase, IMyManager
     {
         public MyManager(IUserContext userContext) : base(userContext)
         {
