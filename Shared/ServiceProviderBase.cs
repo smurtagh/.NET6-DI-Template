@@ -31,9 +31,9 @@ namespace Shared
             return serviceProvider.GetService<T>();
         }
 
-        public void OverrideService<T, I>()
+        public void OverrideService<T, I>(ServiceLifetime lifetime)
         {
-            var service = new ServiceDescriptor(typeof(T), typeof(I), ServiceLifetime.Scoped);
+            var service = new ServiceDescriptor(typeof(T), typeof(I), lifetime);
             serviceCollection.Replace(service);
 
             serviceProvider = serviceCollection.BuildServiceProvider();
