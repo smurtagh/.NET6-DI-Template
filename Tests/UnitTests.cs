@@ -40,7 +40,7 @@ namespace Tests
         [Test]
         public void UnitTests_MyManagerFake()
         {
-            var myManager = new MyManager.MyManager(new UserContext() { UserId = 1 });
+            var myManager = new ManagerServiceProvider(new UserContext() { UserId = 1 }).GetService<IMyManager>();
             ((ManagerBase)myManager).AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>(ServiceLifetime.Scoped);
             ((ManagerBase)myManager).EngineServiceProvider.OverrideService<IMyEngine, FakeEngine>(ServiceLifetime.Scoped);
 
