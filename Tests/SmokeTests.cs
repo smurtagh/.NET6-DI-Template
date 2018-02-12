@@ -8,7 +8,7 @@ namespace Tests
     [TestFixture]
     public class SmokeTests
     {
-        UserContext UserContext => new UserContext() { UserId = 1 };
+        UserContext UserContext => new UserContext() { UserName = "System" };
 
         ManagerServiceProvider ManagerServiceProvider => new ManagerServiceProvider(UserContext);
 
@@ -19,7 +19,7 @@ namespace Tests
 
             var result = ManagerServiceProvider.GetService<IMyManager>().TestMe("test");
 
-            Assert.AreEqual(result, $"{testParam} : MyManager{UserContext.UserId} : MyEngine{UserContext.UserId} : MyAccessor{UserContext.UserId}");
+            Assert.AreEqual(result, $"{testParam} : MyManager{UserContext.UserName} : MyEngine{UserContext.UserName} : MyAccessor{UserContext.UserName}");
         }
     }
 }

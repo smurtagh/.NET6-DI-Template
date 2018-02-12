@@ -16,9 +16,7 @@ namespace MyClient
         {
             this.context = contextAccessor.HttpContext;
         }
-
-        public int UserId { get => 0; set => throw new NotImplementedException(); }
-
+        
         public string UserName { get => context.User?.Identity?.Name; set => throw new NotImplementedException(); }
     }
 }

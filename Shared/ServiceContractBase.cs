@@ -13,7 +13,7 @@ namespace Shared
 
         public virtual string TestMe(string value)
         {
-            return $"{value} : {GetType().Name}{UserContext.UserId}";
+            return $"{value} : {GetType().Name}{UserContext.UserName}";
         }
     }
 }

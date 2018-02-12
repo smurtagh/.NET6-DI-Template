@@ -23,10 +23,10 @@ namespace Tests
             var receiptAccessorMock = new Mock<IMyAccessor>();
             receiptAccessorMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => $"{s} NEWS");
 
-            var myManager = new ManagerServiceProvider(new UserContext() {UserId = 1}).GetService<IMyManager>();
+            var myManager = new ManagerServiceProvider(new UserContext() { UserName = "System" }).GetService<IMyManager>();
 
-            ((ManagerBase) myManager).AccessorServiceProvider.OverrideService<IMyAccessor>(receiptAccessorMock.Object);
-            ((ManagerBase) myManager).EngineServiceProvider.OverrideService<IMyEngine>(receiptEngineMock.Object);
+            ((ManagerBase)myManager).AccessorServiceProvider.OverrideService<IMyAccessor>(receiptAccessorMock.Object);
+            ((ManagerBase)myManager).EngineServiceProvider.OverrideService<IMyEngine>(receiptEngineMock.Object);
 
             var result = myManager.TestMe("test");
 
@@ -40,7 +40,7 @@ namespace Tests
         [Test]
         public void UnitTests_MyManagerFake()
         {
-            var myManager = new ManagerServiceProvider(new UserContext() { UserId = 1 }).GetService<IMyManager>();
+            var myManager = new ManagerServiceProvider(new UserContext() { UserName = "System" }).GetService<IMyManager>();
             ((ManagerBase)myManager).AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>(ServiceLifetime.Scoped);
             ((ManagerBase)myManager).EngineServiceProvider.OverrideService<IMyEngine, FakeEngine>(ServiceLifetime.Scoped);
 
