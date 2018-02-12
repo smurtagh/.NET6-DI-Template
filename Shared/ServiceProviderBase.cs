@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Shared
 {
-    public abstract class ServiceProviderBase
+    public abstract class ServiceProviderBase : IServiceProvider
     {
         private ServiceProvider serviceProvider;
         protected IServiceCollection serviceCollection;

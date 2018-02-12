@@ -11,13 +11,18 @@ namespace MyClient.Pages
 {
     public class IndexModel : PageModel
     {
-        private UserContext userContext = new UserContext();
+        private Shared.IServiceProvider managerServiceProvider;
+
         public string TestMeResult { get; set; }
+
+        public IndexModel(Shared.IServiceProvider serviceProvider)
+        {
+            managerServiceProvider = serviceProvider;
+        }
 
         public void OnGet()
         {
-            userContext.UserId = new Random().Next();
-            TestMeResult = new ManagerServiceProvider(userContext).GetService<IMyManager>()
+            TestMeResult = managerServiceProvider.GetService<IMyManager>()
                 .TestMe(Guid.NewGuid().ToString());
         }
     }

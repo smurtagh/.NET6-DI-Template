@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using MyClient.Services;
+using MyManager;
+using Shared;
 
 namespace MyClient
 {
@@ -22,6 +25,9 @@ namespace MyClient
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddScoped<IUserContext, HttpUserContext>();
+            services.AddScoped<Shared.IServiceProvider, ManagerServiceProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

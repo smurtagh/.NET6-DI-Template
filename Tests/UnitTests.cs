@@ -44,7 +44,6 @@ namespace Tests
             ((ManagerBase)myManager).AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>(ServiceLifetime.Scoped);
             ((ManagerBase)myManager).EngineServiceProvider.OverrideService<IMyEngine, FakeEngine>(ServiceLifetime.Scoped);
 
-
             var result = myManager.TestMe("test");
 
             Assert.IsTrue(result.Contains("FAKE"));
