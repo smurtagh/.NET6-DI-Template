@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading.Tasks;
 using Managers;
 using NUnit.Framework;
@@ -9,9 +10,9 @@ namespace Tests
     [TestFixture]
     public class SmokeTests
     {
-        UserContext UserContext => new UserContext() { UserName = "System" };
+        UserContext _userContext => new UserContext() { UserName = "System" };
 
-        ManagerServiceProvider ManagerServiceProvider => new ManagerServiceProvider(UserContext);
+        ManagerServiceProvider ManagerServiceProvider => new ManagerServiceProvider(_userContext, null, null);
 
         [Test]
         public async Task SmokeTests_MyManager()
@@ -20,7 +21,7 @@ namespace Tests
 
             var result = await ManagerServiceProvider.GetService<IMyManager>().TestMe("test");
 
-            Assert.AreEqual(result, $"{testParam} : MyManager{UserContext.UserName} : MyEngine{UserContext.UserName} : MyAccessor{UserContext.UserName}");
+            Assert.AreEqual(result, $"{testParam} : MyManager{_userContext.UserName} : MyEngine{_userContext.UserName} : MyAccessor{_userContext.UserName}");
         }
     }
 }

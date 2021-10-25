@@ -5,7 +5,7 @@ using Shared;
 
 namespace Accessors
 {
-    public interface IMyAccessor : IServiceContractBase
+    public interface IMyAccessor : IServiceBase
     {
     }
 }

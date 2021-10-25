@@ -2,13 +2,15 @@
 using System.Threading.Tasks;
 using Accessors;
 using Engines;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Shared;
 
 namespace Managers
 {
     internal class MyManager : ManagerBase, IMyManager
     {
-        public MyManager(IUserContext userContext) : base(userContext)
+        public MyManager(IUserContext userContext, ILogger logger, IConfiguration configuration) : base(userContext, logger, configuration)
         {
         }
 

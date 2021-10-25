@@ -6,6 +6,6 @@ namespace Shared
 {
     public interface IServiceProvider
     {
-        T GetService<T>() where T : IServiceContractBase;
+        T GetService<T>() where T : IServiceBase;
     }
 }

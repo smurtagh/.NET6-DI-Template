@@ -24,7 +24,7 @@ namespace Tests
             var receiptAccessorMock = new Mock<IMyAccessor>();
             receiptAccessorMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => Task.FromResult($"{s} MOCKED ACCESSOR"));
 
-            var myManager = new MyManager(new UserContext() { UserName = "System" });
+            var myManager = new MyManager(new UserContext() { UserName = "System" }, null, null);
 
             myManager.AccessorServiceProvider.OverrideService<IMyAccessor>(receiptAccessorMock.Object);
             myManager.EngineServiceProvider.OverrideService<IMyEngine>(receiptEngineMock.Object);
@@ -41,7 +41,7 @@ namespace Tests
         [Test]
         public async Task UnitTests_MyManagerFake()
         {
-            var myManager = new MyManager(new UserContext() { UserName = "System" });
+            var myManager = new MyManager(new UserContext() { UserName = "System" }, null, null);
             myManager.AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>(ServiceLifetime.Scoped);
             myManager.EngineServiceProvider.OverrideService<IMyEngine, FakeEngine>(ServiceLifetime.Scoped);
 

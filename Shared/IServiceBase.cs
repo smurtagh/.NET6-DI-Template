@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Shared
 {
-    public interface IServiceContractBase
+    public interface IServiceBase
     {
         Task<string> TestMe(string value);
     }

@@ -5,7 +5,7 @@ using Shared;
 
 namespace Managers
 {
-    public interface IMyManager : IServiceContractBase
+    public interface IMyManager : IServiceBase
     {
     }
 }
