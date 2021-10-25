@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
-using MyAccessor;
-using MyEngine;
-using MyManager;
+using Accessors;
+using Engines;
+using Managers;
 using NUnit.Framework;
 using Shared;
+using System.Threading.Tasks;
 
 namespace Tests
 {
@@ -15,54 +16,54 @@ namespace Tests
     public class UnitTests
     {
         [Test]
-        public void UnitTests_MyManagerMock()
+        public async void UnitTests_MyManagerMock()
         {
             var receiptEngineMock = new Mock<IMyEngine>();
-            receiptEngineMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => $"{s} FAKE");
+            receiptEngineMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => $"{s} MOCKED ENGINE");
 
             var receiptAccessorMock = new Mock<IMyAccessor>();
-            receiptAccessorMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => $"{s} NEWS");
+            receiptAccessorMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => $"{s} MOCKED ACCESSOR");
 
-            var myManager = new ManagerServiceProvider(new UserContext() { UserName = "System" }).GetService<IMyManager>();
+            var myManager = new MyManager(new UserContext() { UserName = "System" });
 
-            ((ManagerBase)myManager).AccessorServiceProvider.OverrideService<IMyAccessor>(receiptAccessorMock.Object);
-            ((ManagerBase)myManager).EngineServiceProvider.OverrideService<IMyEngine>(receiptEngineMock.Object);
+            myManager.AccessorServiceProvider.OverrideService<IMyAccessor>(receiptAccessorMock.Object);
+            myManager.EngineServiceProvider.OverrideService<IMyEngine>(receiptEngineMock.Object);
 
-            var result = myManager.TestMe("test");
+            var result = await myManager.TestMe("test");
 
-            Assert.IsTrue(result.Contains("FAKE"));
-            Assert.IsTrue(result.Contains("NEWS"));
+            Assert.IsTrue(result.Contains("MOCKED ENGINE"));
+            Assert.IsTrue(result.Contains("MOCKED ACCESSOR"));
 
             receiptEngineMock.Verify(a => a.TestMe(It.IsAny<string>()), Times.Once());
             receiptAccessorMock.Verify(a => a.TestMe(It.IsAny<string>()), Times.Once());
         }
 
         [Test]
-        public void UnitTests_MyManagerFake()
+        public async void UnitTests_MyManagerFake()
         {
-            var myManager = new ManagerServiceProvider(new UserContext() { UserName = "System" }).GetService<IMyManager>();
-            ((ManagerBase)myManager).AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>(ServiceLifetime.Scoped);
-            ((ManagerBase)myManager).EngineServiceProvider.OverrideService<IMyEngine, FakeEngine>(ServiceLifetime.Scoped);
+            var myManager = new MyManager(new UserContext() { UserName = "System" });
+            myManager.AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>(ServiceLifetime.Scoped);
+            myManager.EngineServiceProvider.OverrideService<IMyEngine, FakeEngine>(ServiceLifetime.Scoped);
 
-            var result = myManager.TestMe("test");
+            var result = await myManager.TestMe("test");
 
-            Assert.IsTrue(result.Contains("FAKE"));
-            Assert.IsTrue(result.Contains("NEWS"));
+            Assert.IsTrue(result.Contains("FAKE ENGINE"));
+            Assert.IsTrue(result.Contains("FAKE ACCESSOR"));
         }
 
         private class FakeEngine : IMyEngine
         {
-            public string TestMe(string value)
+            public Task<string> TestMe(string value)
             {
-                return $"{value} FAKE";
+                return Task.FromResult($"{value} FAKE ENGINE");
             }
         }
 
         private class FakeAccessor : IMyAccessor
         {
-            public string TestMe(string value)
+            public Task<string> TestMe(string value)
             {
-                return $"{value} NEWS";
+                return Task.FromResult($"{value} FAKE ACCESSOR");
             }
         }
     }

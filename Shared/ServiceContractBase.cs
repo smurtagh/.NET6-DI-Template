@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 namespace Shared
 {
@@ -11,9 +12,9 @@ namespace Shared
             UserContext = userContext;
         }
 
-        public virtual string TestMe(string value)
+        public virtual Task<string> TestMe(string value)
         {
-            return $"{value} : {GetType().Name}{UserContext.UserName}";
+            return Task.FromResult($"{value} : {GetType().Name}{UserContext.UserName}");
         }
     }
 }

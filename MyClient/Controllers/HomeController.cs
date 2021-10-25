@@ -1,45 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+using Managers;
 using Microsoft.AspNetCore.Mvc;
-using MyClient.Models;
-using MyManager;
+using MyAPIClient.Controllers;
+using Shared;
+using IServiceProvider = Shared.IServiceProvider;
 
 namespace MyClient.Controllers
 {
-    public class HomeController : Controller
-    {
-        private Shared.IServiceProvider _serviceProvider;
-        public HomeController(Shared.IServiceProvider serviceProvider)
+    [ApiController]
+    [Route("[controller]")]
+    public class HomeController : ControllerBase<HomeController>
+    {        
+        public HomeController(ILogger<HomeController> logger, IServiceProvider serviceProvider, IUserContext userContext) : base(logger, serviceProvider, userContext)
         {
-            _serviceProvider = serviceProvider;
         }
 
-        public IActionResult Index()
+        [HttpGet(Name = "Home")]
+        public Task<string> Get()
         {
-            var testMeResult = _serviceProvider.GetService<IMyManager>().TestMe("test");
-            return View("Index", testMeResult);
-        }
-
-        public IActionResult About()
-        {
-            ViewData["Message"] = "Your application description page.";
-
-            return View();
-        }
-
-        public IActionResult Contact()
-        {
-            ViewData["Message"] = "Your contact page.";
-
-            return View();
-        }
-
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            return _serviceProvider.GetService<IMyManager>().TestMe("test");
         }
     }
 }

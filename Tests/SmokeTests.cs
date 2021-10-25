@@ -1,5 +1,5 @@
 ﻿using System;
-using MyManager;
+using Managers;
 using NUnit.Framework;
 using Shared;
 

@@ -13,8 +13,6 @@ namespace Shared
 
         protected ServiceProviderBase(IUserContext userContext)
         {
-            // TODO: Santi - please add detailed description of how this is used to pass along the user context
-            // TODO: Santi - please add any hyperlinks to examples, blogs, etc that weer references you used
             serviceCollection = new ServiceCollection
             {
                 new ServiceDescriptor(typeof(IUserContext), userContext)
