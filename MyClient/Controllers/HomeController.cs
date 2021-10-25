@@ -16,9 +16,9 @@ namespace MyClient.Controllers
         }
 
         [HttpGet(Name = "Home")]
-        public Task<string> Get()
+        public async Task<string> Get()
         {
-            return _serviceProvider.GetService<IMyManager>().TestMe("test");
+            return await _serviceProvider.GetService<IMyManager>().TestMe("test");
         }
     }
 }
