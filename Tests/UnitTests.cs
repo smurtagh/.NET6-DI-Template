@@ -16,13 +16,13 @@ namespace Tests
     public class UnitTests
     {
         [Test]
-        public async void UnitTests_MyManagerMock()
+        public async Task UnitTests_MyManagerMock()
         {
             var receiptEngineMock = new Mock<IMyEngine>();
-            receiptEngineMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => $"{s} MOCKED ENGINE");
+            receiptEngineMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => Task.FromResult($"{s} MOCKED ENGINE"));
 
             var receiptAccessorMock = new Mock<IMyAccessor>();
-            receiptAccessorMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => $"{s} MOCKED ACCESSOR");
+            receiptAccessorMock.Setup(x => x.TestMe(It.IsAny<string>())).Returns((string s) => Task.FromResult($"{s} MOCKED ACCESSOR"));
 
             var myManager = new MyManager(new UserContext() { UserName = "System" });
 
@@ -39,7 +39,7 @@ namespace Tests
         }
 
         [Test]
-        public async void UnitTests_MyManagerFake()
+        public async Task UnitTests_MyManagerFake()
         {
             var myManager = new MyManager(new UserContext() { UserName = "System" });
             myManager.AccessorServiceProvider.OverrideService<IMyAccessor, FakeAccessor>(ServiceLifetime.Scoped);

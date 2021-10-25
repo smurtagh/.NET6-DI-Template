@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Managers;
 using NUnit.Framework;
 using Shared;
@@ -13,11 +14,11 @@ namespace Tests
         ManagerServiceProvider ManagerServiceProvider => new ManagerServiceProvider(UserContext);
 
         [Test]
-        public void SmokeTests_MyManager()
+        public async Task SmokeTests_MyManager()
         {
             var testParam = "test";
 
-            var result = ManagerServiceProvider.GetService<IMyManager>().TestMe("test");
+            var result = await ManagerServiceProvider.GetService<IMyManager>().TestMe("test");
 
             Assert.AreEqual(result, $"{testParam} : MyManager{UserContext.UserName} : MyEngine{UserContext.UserName} : MyAccessor{UserContext.UserName}");
         }
