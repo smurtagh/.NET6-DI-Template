@@ -1,1 +1,1 @@
-Sample Dependency Injection using .NET Core
+Sample Dependency Injection Pattern for iDesign using .NET6
